@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<input id="password" type="password" name="">
+<script type="text/javascript">
+    let argToArr = function() {
+        let arg = arguments;
+        console.log(arg);
+        return Array.prototype.concat.apply([], arg);
+    };
+    var result = argToArr();
+    console.log(result);
+</script>
+</body>
+</html>

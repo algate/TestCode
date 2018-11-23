@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+const xhr = (function() {
+    var xhr;
+    return function() {
+        if (!xhr) {
+            if(window.XMLHttpRequest){
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject('Microsoft.XMLHTTP');
+            }
+        }
+        return xhr;
+    }
+})();
+function Ajax(type, url, params){
+    const promise = new Promise((resolve, reject) => {
+        const client = xhr();
+        const handler = function() {
+            if (this.readyState !== 4) {
+                return;
+            }
+            if (this.status === 200) {
+                resolve(JSON.parse(this.response));
+            } else {
+                reject(new Error(this.statusText));
+            }
+        };
+        var Type = type.toUpperCase();
+        client.onreadystatechange = handler;
+        if (Type === 'GET') {
+            if(params && typeof params == 'object'){
+                var arr = [];
+                for(var key in params){
+                    arr.push(key + '=' + params[key]);
+                }
+                var getData = arr.join("&");
+            }
+            client.open("GET", params ? url +"?" + getData : url, true);
+            client.send(null);
+        } else if (Type === 'POST') {
+            client.open('POST', url, true);
+            client.responseType="json";
+            client.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+            client.send(params ? params : null);
+        }
+    });
+    return promise;
+};
+Ajax('get','../../ssms-web-monitor-api/api/getDeviceModelProportion',{tenentId:'143'}).then(r => {
+    r.code === '0000' ? fun3(r.data.modelList) : null;
+}).catch(error => {
+    console.log(error);
+    fun3(2);
+});
+Ajax('get','../../ssms-web-monitor-api/api/getVemSoftwareVersionProportion',{tenentId:'143'}).then(r => {
+    r.code === '0000' ? fun3(r.data.modelList) : null;
+}).catch(error => {
+    console.log(error);
+    fun3(2);
+});
+var fun3 = function(){
+    console.log(arguments);
+}
+</script>
+</body>
+</html>

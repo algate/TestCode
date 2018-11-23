@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+// 普通 —— 图片的预加载
+let myImage = (function() {
+    let imgNode = document.createElement('img');
+    document.body.appendChild(imgNode);
+    return {
+        setSrc: function(src) {
+            imgNode.src = src;
+        }
+    }
+})();
+// myImage.setSrc('timg.jpg');
+
+// 引入代理模式
+let proxyImage = (function() {
+    let img = new Image;
+    img.onload = function() {
+        myImage.setSrc(this.src);
+    }
+    return {
+        setSrc: function(src) {
+            myImage.setSrc('file:// /E:/Retest/Spinner_t.gif');
+            setTimeout(function() {
+                img.src = src;
+            }, 500);
+        }
+    }
+})();
+proxyImage.setSrc('file:// /E:/Retest/timg.jpg');
+</script>
+</body>
+</html>
