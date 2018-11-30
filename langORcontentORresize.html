@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+<style type="text/css">
+    :lang(ch) > q {
+        quotes: '“''”';
+    }
+    :lang(en) > q {
+        quotes: '"''"';
+    }
+    :lang(book) > q {
+        quotes: '《''》';
+    }
+    .mt6 {
+        margin-top: 6px;
+    }
+    span[data="site"]:before {
+        content: attr(href);
+    }
+    div[resize="both"] {
+        resize: both;
+        overflow: auto;
+        padding: 6px;
+        border: 1px solid #666;
+    }
+    div[resize="horizontal"] {
+        resize: horizontal;
+        overflow: auto;
+        padding: 6px;
+        border: 1px solid #666;
+    }
+    div[resize="vertical"] {
+        resize: vertical;
+        overflow: auto;
+        padding: 6px;
+        border: 1px solid #666;
+    }
+    .contenteditable {
+        border: 1px solid #8bc8ff;
+    }
+</style>
+</head>
+<body>
+<div>
+    <p lang="ch"><q>这是中文显示！</q></p>
+    <p lang="en"><q>this is English show!</q></p>
+    <p lang="book">
+        <q>CSS content内容生成技术以及应用</q>
+        <span data="site" href="https://www.zhangxinxu.com/wordpress/2010/04/css-content内容生成技术以及应用/"></span>
+    </p>
+    <div resize="both">resize</div>
+    <div resize="horizontal" class="mt6">resize-horizontal</div>
+    <div resize="vertical" class="mt6">resize-vertical</div>
+    <div contenteditable="true" class="contenteditable mt6">contenteditable</div>
+</div>
+</body>
+</html>
