@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+const hashObj = (arr) => arr.reduce((hash,{title,...keys}) => {
+        typeof title;
+        hash[title] = keys;
+        return hash
+    },
+    {}
+);
+var colors = [
+    {
+        id: 'xa',
+        title: 'xaTit',
+        rating: '91'
+    },
+    {
+        id: 'xb',
+        title: 'xbTit',
+        rating: '92'
+    },
+    {
+        id: 'xc',
+        title: 'xcTit',
+        rating: '93'
+    },
+    {
+        id: 'xd',
+        title: 'xdTit',
+        rating: '94'
+    }
+]
+var a = hashObj(colors);
+console.log(a);
+</script>
+</body>
+</html>
