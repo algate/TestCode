@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    var hAndm = function(time) {
+        var hour = Math.floor(time / 3600);
+        var minutes = Math.floor((time - hour*3600)/60);
+        console.log(hour,minutes);
+        return !!hour ? hour+'小时'+minutes+'分钟' : minutes+'分钟';
+    };
+    console.log(hAndm(368));
+</script>
+</body>
+</html>
