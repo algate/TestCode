@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    var str = 'http://testidcms.sudiyi.cn/sdy-web-app/views/index.html?orderDetail=296&code=001kuVuf18PpIr0N8Fwf1nQOuf1kuVuR&state=0#/';
+    var a = str.split('?')[1].split('&');
+    var flag = a.some(function(str){
+        return /^orderDetail/g.test(str);
+    });
+    var workerId,path;
+    if (flag) {
+        workerId = a.filter(function(str){
+            return /^orderDetail/g.test(str);
+        });
+        path = workerId[0].split('=').join('/');
+    }
+    console.log(flag, workerId, path);
+</script>
+</body>
+</html>

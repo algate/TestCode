@@ -44,7 +44,7 @@ function ajax(type, url, data, contentType) {
             }
         };
 
-        xhr.timeout = 10000;
+        // xhr.timeout = 10000;
         xhr.ontimeout = function() {
             reject('链接超时！')
         };
