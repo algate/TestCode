@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div id="div"></div>
+<script type="text/javascript">
+    var div = document.getElementById('div');
+    var A = function() {
+        var C = function() {
+            div.innerHTML += 'first';
+        };
+        var W = window.onload;
+        window.onload = function() {
+            C();
+            if (W) {
+                W();
+            }
+        }
+    }();
+    var A = function() {
+        var C = function() {
+            div.innerHTML += 'second';
+        };
+        var W = window.onload;
+        window.onload = function() {
+            C();
+            if (W) {
+                W();
+            }
+        }
+    }();
+</script>
+</body>
+</html>

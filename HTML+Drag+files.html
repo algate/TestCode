@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+    .highlighted {
+        background: yellow;
+    }
+    .validtarget {
+        background: lightblue;
+    }
+    </style>
+</head>
+<body>
+<div id="droptarget"></div>
+<div id="status"></div>
+<script type="text/javascript">
+var droptarget;
+function setStatus(text) {
+    document.querySelector('#status').innerHTML = text;
+}
+
+function loadDemo() {
+    droptarget = document.querySelector('#droptarget');
+    droptarget.className = 'validtarget';
+}
+</script>
+</body>
+</html>

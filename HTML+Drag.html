@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML5-Drag</title>
+    <style type="text/css">
+    fieldset {
+        border: 1px solid #ccc;
+    }
+    #members li {
+        /*list-style: none;*/
+        cursor: move;
+    }
+    .highlighted {
+        background: yellow;
+    }
+    .validtarget {
+        background: lightblue;
+    }
+    #racers,
+    #volunteers {
+        min-height: 20px;
+    }
+    </style>
+</head>
+<body>
+<h3>Drag members to either the Racers or Volumteers list.</h3>
+<ul id="members">
+    <li draggable="true" data-age="31">Brian Albers</li>
+    <li draggable="true" data-age="32">Brian Albers2</li>
+    <li draggable="true" data-age="33">Brian Albers3</li>
+    <li draggable="true" data-age="33">Brian Albers4</li>
+    <li draggable="true" data-age="34">Brian Albers5</li>
+    <li draggable="true" data-age="35">Brian Albers6</li>
+    <li draggable="true" data-age="36">Brian Albers7</li>
+</ul>
+<div class="dropList">
+    <fieldset id="racersField">
+        <legend>Racers (by Age):</legend>
+        <ul id="racers"></ul>
+    </fieldset>
+</div>
+<div class="dropList">
+    <fieldset id="volunteersField">
+        <legend>Volunteers (by Name):</legend>
+        <ul id="volunteers"></ul>
+    </fieldset>
+</div>
+<script type="text/javascript">
+let racers = [];
+let volunteers = [];
+let racersList;
+let volunteersList;
+
+// Event处理器
+let loadDemo = () => {
+    racersList = document.querySelector('#racers');
+    volunteersList = document.querySelector('#volunteers');
+    // 目标列表注册了drag,enter,leave,drop事件管理器
+    let lists = [racersList, volunteersList];
+    [].forEach.call(lists, function(list) {
+        list.addEventListener('dragenter', handleDragEnter, false);
+        list.addEventListener('dragleave', handleDragLeave, false);
+        list.addEventListener('drop', handleDrop, false);
+    });
+    // 每一个目标列表都有一个特定的dragover事件处理器
+    racersList.addEventListener('dragover', handleDragOverRacers, false);
+    volunteersList.addEventListener('dragover', handleDragOverVolunteers, false);
+    // 列表外围的fieldsets起到缓冲作用，用来重置dargover的样式
+    let fieldsets = document.querySelectorAll('#racersField, #volunteersField');
+    [].forEach.call(fieldsets, function(fieldset) {
+        fieldset.addEventListener('dragover', handleDragOverOuter, false);
+    });
+    // 每个拖动的成勇都有拖动开始和拖动结束事件处理器
+    let members = document.querySelectorAll('#members li');
+    [].forEach.call(members, (member) => {
+        member.addEventListener('dragstart', handleDragStart, false);
+        member.addEventListener('dragend', handleDragEnd, false);
+    });
+}
+window.addEventListener('load', loadDemo, false);
+
+// 事件处理器
+function handleDragStart(evt) {
+    evt.effectAllowed = 'copy';
+    evt.dataTransfer.setData('text/plain', evt.target.textContent);
+    evt.dataTransfer.setData('text/html', evt.target.dataset.age);
+
+    racersList.className = 'validtarget';
+    volunteersList.className = 'validtarget';
+    return true;
+}
+function handleDragEnter(evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    return false;
+}
+function handleDragLeave(evt) {
+    return false;
+}
+function handleDragOverOuter(evt) {
+    if (evt.target.id === 'racersField') {
+        racersList.className = 'validtarget';
+    } else if (evt.target.id === 'volunteersField') {
+        volunteersList.className = 'validtarget';
+    }
+    evt.stopPropagation();
+    return false;
+}
+function handleDragOverRacers(evt) {
+    evt.dataTransfer.dropEffect = 'copy';
+    evt.stopPropagation();
+    evt.preventDefault();
+    racersList.className = 'highlighted';
+    return false;
+}
+function handleDragOverVolunteers(evt) {
+    evt.dataTransfer.dropEffect = 'copy';
+    evt.stopPropagation();
+    evt.preventDefault();
+    volunteersList.className = 'highlighted';
+    return false;
+}
+function handleDrop (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
+    var dropTarget = evt.target;
+    var text = evt.dataTransfer.getData('text/plain');
+    var group = volunteers;
+    var list = volunteersList;
+
+    if ((dropTarget.id !== 'volunteers') && (dropTarget.parentNode.id !== 'volunteers')) {
+        text = evt.dataTransfer.getData('text/html') + ': ' + text;
+        group = racers;
+        list = racersList;
+    }
+    if (group.indexOf(text) === -1) {
+        group.push(text);
+        group.sort();
+
+        while (list.hasChildNodes()) {
+            list.removeChild(list.lastChild);
+        }
+        [].forEach.call(group, function(person) {
+            var newChild = document.createElement('li');
+            newChild.textContent = person;
+            list.appendChild(newChild);
+        });
+    }
+    return false;
+}
+
+function handleDragEnd (evt) {
+    racersList.className = null;
+    volunteersList.className = null;
+    return false;
+}
+</script>
+</body>
+</html>

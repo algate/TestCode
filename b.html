@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<script type="text/javascript">
+    function fn() {}
+    fn.prototype = {
+        attr1: 'aaa',
+        attr2: 'bbb'
+    };
+    var obj = new fn();
+    document.write(obj.attr1);
+    document.write(obj.attr2);
+    document.write(obj instanceof fn);
+    document.write("<br />");
+    fn.prototype = {};
+    document.write(obj.attr1);
+    document.write(obj.attr2);
+    document.write(obj instanceof fn);
+    console.log(fn.prototype);
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Js+Canvas实现五子棋算法</title>
+</head>
+<body>
+    <div><span id="tip"></span></div>
+    <canvas id="js_canvas" width="450" height="450"></canvas>
+<script type="text/javascript">
+let tip = document.querySelector('#tip');
+// let tip = $$('#tip')[0];
+console.log($$('#tip'));
+try {
+    document.createElement('canvas').getContext('2d');
+    tip.innerHTML = 'HTML5 Canvas is supported in your brower.';
+} catch (e) {
+    tip.innerHTML = 'HTML5 Canvas is not supported in your brower.';
+}
+
+let canvas = document.querySelector('#js_canvas');
+var drawChessBoard = () => {
+    context = canvas.getContext('2d');
+    for (let i = 0; i < 15; i++) {
+        context.beginPath();
+        context.moveTo(15 + i*30, 15);
+        context.lineTo(15 + i*30, 435);
+        context.lineWidth = 1;
+        context.stroke();
+        // context.beginPath();
+        context.moveTo(15, 15 + i*30);
+        context.lineTo(435, 15 + i*30);
+        context.stroke();
+    }
+}
+window.addEventListener('load', drawChessBoard, true);
+// 赢法数组
+let wins = [];
+for (let i = 0; i < 15; i++) {
+    wins[i] =[];
+    for (let j = 0; j < 15; j++)
+        wins[i][j] = [];
+}
+let count = 0;
+
+
+// 横线赢法
+for (let i = 0; i < 15; i++) {
+    for (let j = 0; j < 11; j++) {
+        for (let k = 0; k < 5; k++) {
+            wins[i][j+k][count] = true;
+        }
+        count++;
+    }
+}
+// 竖线
+for (let i = 0; i < 15; i++) {
+    for (let j = 0; j < 11; j++) {
+        for (let k = 0; k < 5; k++) {
+            wins[j+k][i][count] = true;
+        }
+        count++;
+    }
+}
+// 正斜线
+for (let i = 0;i < 11; i++) {
+    for (let j = 0; j < 11; j++) {
+        for (let k = 0; k < 5; k++) {
+            wins[i+k][j+k][count] = true;
+        }
+        count++;
+    }
+}
+// 反斜线
+for (let i = 0;i < 11; i++) {
+    for (let j = 14; j > 3; j--) {
+        for (let k = 0; k < 5; k++) {
+            wins[i+k][j-k][count] = true;
+        }
+        count++;
+    }
+}
+
+canvas.onclick = e => {
+    console.log(e);
+    let x = e.offsetX;
+    let y = e.offsetY;
+    let i = Math.floor(x/30);
+    let j = Math.floor(y/30);
+    oneStep(i, j, 'me');
+}
+// 画棋子
+let oneStep = (i, j, who) => {
+    context.beginPath();
+    context.arc(15 + i * 30, 15 + j * 30, 13, 0, 2 * Math.PI);
+    context.closePath();
+    // createRadialGradient(x0,y0,r0,x1,y2,r1);
+    let radialGradient = context.createRadialGradient(15 + i * 30, 15 + j * 30, 13, 15 + i * 30, 15 + j * 30, 0);
+    if (who === 'me') {
+        radialGradient.addColorStop(0, '#0a0a0a');
+        radialGradient.addColorStop(1, '#676767');
+    }
+    context.fillStyle = radialGradient;
+    context.fill();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web SQL Database</title>
+</head>
+<body>
+<div id="racers"></div>
+<script type="text/javascript">
+let db = openDatabase('db', '1.0', 'my first Database', 2*1024*1024);
+let log = function(id, name) {
+    let row = document.createElement('tr');
+    let idCell = document.createElement('td');
+    let nameCell = document.createElement('td');
+    idCell.textContext = id;
+    nameCell.textContext = name;
+    row.appendChild(idCell);
+    row.appendChild(nameCell);
+    document.getElementById('racers').appendChild(row);
+}
+let doQuery = function() {
+    db.transaction(tx => {
+        tx.executeSql('SELECT * from racers', [], (tx, result) => {
+            console.log(result);
+            for (let i = 0; i < result.rows.length; i++) {
+                let item = result.rows.item(i);
+                // let item = result.rows[i];
+                log(item.id, item.name);
+            }
+        });
+    });
+}
+let initDatabase = function() {
+    let name = ['Peter Lubbers', 'Brian Albers', 'Fran Salim'];
+    db.transaction(tx => {
+        tx.executeSql('SELECT * from racers', [], (tx, result) => {
+            if (result.rows.length > 0) {
+                tx.executeSql('DELETE * from racers');
+            }
+        });
+    });
+    // transaction: 访问数据库
+    db.transaction(tx => {
+        // executeSql: 执行真实的SQL查询语句
+        tx.executeSql('CREATE TABLE IF NOT EXISTS racers (id integer primary key autoincrement, name)');
+        for (let i = 0; i < name.length; i++) {
+            tx.executeSql('INSERT INTO racers (name) VALUES (?)', [name[i]]);
+        }
+        doQuery();
+    })
+}
+initDatabase();
+</script>
+</body>
+</html>
