@@ -31,7 +31,7 @@
     <ul class="pagination"></ul>
 <script type="text/javascript">
 var total = 20;
-var current = 8;
+var current = 5;
 
 var _range = function ( len, start ){
     var out = [];
@@ -52,10 +52,10 @@ var _range = function ( len, start ){
 
     return out;
 };
-function _numbers ( page, pages ) {
+function _numbers ( page, pages, numOfpages ) {
     var
         numbers = [],
-        buttons = 7,
+        buttons = numOfpages,
         half = Math.floor( buttons / 2 ),
         i = 1;
 
@@ -82,7 +82,7 @@ function _numbers ( page, pages ) {
 
     return numbers;
 }
-var arr = _numbers(current-1, total);
+var arr = _numbers(current-1, total, 7);
 temparr = arr.map(function(value){
     // return isNaN(value) ? '&#x2026;' : (value + 1);
     return value == 'ellipsis' ? '&#x2026;' : (value + 1);
